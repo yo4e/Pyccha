@@ -57,7 +57,7 @@ Python code
 Python runtime
 ```
 
-最初の PoC では単純な行ベース変換でもよいものとし、文法が固まってきた段階で tokenizer / parser / AST の導入を検討します。
+最初の PoC では単純な行ベース変換でもよいものとしますが、v0.1 本体では tokenizer / parser / AST を持つ構成を想定します。調査時点の parser 第一候補は、Unicode と位置情報を扱いやすい Lark です。
 
 ## CLI のイメージ
 
@@ -135,7 +135,7 @@ Pythoncha 独自の小さな言語として成立させ、必要に応じて Pyt
 - Python を出力先にするトランスパイラ / DSL 実装
 - Unicode を前提にした言語処理系
 
-詳細は Issue で調査します。
+調査結果は [`docs/research/related-projects.md`](docs/research/related-projects.md) にまとめています。
 
 ## 名前について
 
@@ -144,7 +144,7 @@ Pythoncha 独自の小さな言語として成立させ、必要に応じて Pyt
 - リポジトリ: `yo4e/Pythoncha`
 - 拡張子候補: `.cha`
 
-名称は仮決定です。Python の商標ポリシーや PyPI 上のパッケージ名、既存プロジェクトとの衝突については公開前に再確認します。
+名称は仮決定です。調査の結果、Python を実行基盤にすること自体と名称の商標問題は分けて考える必要があると分かりました。`Pythoncha` は別言語の名称でもあるため、一般公開を大きくする前に Python Software Foundation の商標窓口へ確認する方針です。PyPI 上のパッケージ名や既存プロジェクトとの衝突も公開直前に再確認します。
 
 ## Status
 
