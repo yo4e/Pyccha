@@ -1,8 +1,8 @@
-# Pythoncha（ぱいそんちゃ）
+# Pyccha（ぱいっちゃ）
 
 **北九州弁で書ける、Pythonベースの実験的プログラミング言語。**
 
-Pythoncha は、北九州弁の語感や文法をプログラミング構文として取り込めないか試す、小さな言語実験です。
+Pyccha は、北九州弁の語感や文法をプログラミング構文として取り込めないか試す、小さな言語実験です。
 
 単に `print` を「表示」に置き換える日本語化ではなく、**「〜っちゃ」「〜けん」「〜やったら」など、方言の話し方そのものを構文にする**ことを目指します。
 
@@ -45,12 +45,12 @@ Pythoncha は、北九州弁の語感や文法をプログラミング構文と�
 
 ## 想定アーキテクチャ
 
-初期版は、Pythoncha のソースコードを Python に変換して実行するトランスパイラ方式を想定しています。
+初期版は、Pyccha のソースコードを Python に変換して実行するトランスパイラ方式を想定しています。
 
 ```text
 hello.cha
    ↓
-Pythoncha parser / transpiler
+Pyccha parser / transpiler
    ↓
 Python code
    ↓
@@ -62,15 +62,15 @@ Python runtime
 ## CLI のイメージ
 
 ```bash
-pythoncha hello.cha
+pyccha hello.cha
 ```
 
 将来的には、
 
 ```bash
-pythoncha run hello.cha
-pythoncha check hello.cha
-pythoncha --version
+pyccha run hello.cha
+pyccha check hello.cha
+pyccha --version
 ```
 
 のようなCLIも検討します。
@@ -108,7 +108,7 @@ pythoncha --version
 
 自然な日本語・方言に近づけるほど曖昧さが増えます。
 
-Pythoncha では、
+Pyccha では、
 
 - 厳密な構文だけを受け付ける
 - 表記ゆれをある程度許容する
@@ -120,7 +120,7 @@ Pythoncha では、
 
 初期版では Python をバックエンドとして利用しますが、Python の全機能を方言化することは目的にしません。
 
-Pythoncha 独自の小さな言語として成立させ、必要に応じて Python の機能へ橋を架ける方向を想定しています。
+Pyccha 独自の小さな言語として成立させ、必要に応じて Python の機能へ橋を架ける方向を想定しています。
 
 ## 参考にしたい系譜
 
@@ -139,12 +139,12 @@ Pythoncha 独自の小さな言語として成立させ、必要に応じて Pyt
 
 ## 名前について
 
-- 表記: **Pythoncha**
-- 読み: **ぱいそんちゃ**
-- リポジトリ: `yo4e/Pythoncha`
+- 表記: **Pyccha**
+- 読み: **ぱいっちゃ**
+- リポジトリ: `yo4e/Pyccha`
 - 拡張子候補: `.cha`
 
-名称は仮決定です。調査の結果、Python を実行基盤にすること自体と名称の商標問題は分けて考える必要があると分かりました。`Pythoncha` は別言語の名称でもあるため、一般公開を大きくする前に Python Software Foundation の商標窓口へ確認する方針です。PyPI 上のパッケージ名や既存プロジェクトとの衝突も公開直前に再確認します。
+名称は **Pyccha（ぱいっちゃ）** に変更しました。由来は Python の `Py` と北九州弁の「〜っちゃ」です。名称自体に `Python` を含めないため、旧称 `Pythoncha` で懸念していた「別言語名に Python 商標を直接含める」問題は大きく後退しました。Python Software Foundation 公式・公認と誤認させる表現や Python ロゴの改変利用は避けます。PyPI 上の `pyccha`、CLI 名、既存プロジェクトとの衝突は初回公開直前に再確認します。
 
 ## Status
 
