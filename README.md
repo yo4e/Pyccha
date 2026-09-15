@@ -1,8 +1,8 @@
-# Pythoncha（ぱいそんちゃ）
+# Pyccha（ぱいっちゃ）
 
 **北九州弁で書ける、Pythonベースの実験的プログラミング言語。**
 
-Pythoncha は、北九州弁の語感や文法をプログラミング構文として取り込めないか試す、小さな言語実験です。
+Pyccha は、北九州弁の語感や文法をプログラミング構文として取り込めないか試す、小さな言語実験です。
 
 単に `print` を「表示」に置き換える日本語化ではなく、**「〜っちゃ」「〜けん」「〜やったら」など、方言の話し方そのものを構文にする**ことを目指します。
 
@@ -45,32 +45,32 @@ Pythoncha は、北九州弁の語感や文法をプログラミング構文と�
 
 ## 想定アーキテクチャ
 
-初期版は、Pythoncha のソースコードを Python に変換して実行するトランスパイラ方式を想定しています。
+初期版は、Pyccha のソースコードを Python に変換して実行するトランスパイラ方式を想定しています。
 
 ```text
 hello.cha
    ↓
-Pythoncha parser / transpiler
+Pyccha parser / transpiler
    ↓
 Python code
    ↓
 Python runtime
 ```
 
-最初の PoC では単純な行ベース変換でもよいものとし、文法が固まってきた段階で tokenizer / parser / AST の導入を検討します。
+最初の PoC では単純な行ベース変換でもよいものとしますが、v0.1 本体では tokenizer / parser / AST を持つ構成を想定します。調査時点の parser 第一候補は、Unicode と位置情報を扱いやすい Lark です。
 
 ## CLI のイメージ
 
 ```bash
-pythoncha hello.cha
+pyccha hello.cha
 ```
 
 将来的には、
 
 ```bash
-pythoncha run hello.cha
-pythoncha check hello.cha
-pythoncha --version
+pyccha run hello.cha
+pyccha check hello.cha
+pyccha --version
 ```
 
 のようなCLIも検討します。
@@ -108,7 +108,7 @@ pythoncha --version
 
 自然な日本語・方言に近づけるほど曖昧さが増えます。
 
-Pythoncha では、
+Pyccha では、
 
 - 厳密な構文だけを受け付ける
 - 表記ゆれをある程度許容する
@@ -120,7 +120,7 @@ Pythoncha では、
 
 初期版では Python をバックエンドとして利用しますが、Python の全機能を方言化することは目的にしません。
 
-Pythoncha 独自の小さな言語として成立させ、必要に応じて Python の機能へ橋を架ける方向を想定しています。
+Pyccha 独自の小さな言語として成立させ、必要に応じて Python の機能へ橋を架ける方向を想定しています。
 
 ## 参考にしたい系譜
 
@@ -135,16 +135,16 @@ Pythoncha 独自の小さな言語として成立させ、必要に応じて Pyt
 - Python を出力先にするトランスパイラ / DSL 実装
 - Unicode を前提にした言語処理系
 
-詳細は Issue で調査します。
+調査結果は [`docs/research/related-projects.md`](docs/research/related-projects.md) にまとめています。
 
 ## 名前について
 
-- 表記: **Pythoncha**
-- 読み: **ぱいそんちゃ**
-- リポジトリ: `yo4e/Pythoncha`
+- 表記: **Pyccha**
+- 読み: **ぱいっちゃ**
+- リポジトリ: `yo4e/Pyccha`
 - 拡張子候補: `.cha`
 
-名称は仮決定です。Python の商標ポリシーや PyPI 上のパッケージ名、既存プロジェクトとの衝突については公開前に再確認します。
+名称は **Pyccha（ぱいっちゃ）** に変更しました。由来は Python の `Py` と北九州弁の「〜っちゃ」です。名称自体に `Python` を含めないため、旧称 `Pythoncha` で懸念していた「別言語名に Python 商標を直接含める」問題は大きく後退しました。Python Software Foundation 公式・公認と誤認させる表現や Python ロゴの改変利用は避けます。PyPI 上の `pyccha`、CLI 名、既存プロジェクトとの衝突は初回公開直前に再確認します。
 
 ## Status
 
