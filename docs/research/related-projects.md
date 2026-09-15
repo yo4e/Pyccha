@@ -1,4 +1,4 @@
-# Pythoncha 関連言語・実装方式・ライセンス調査
+# Pyccha 関連言語・実装方式・ライセンス調査
 
 調査日: 2026-09-15
 
@@ -8,14 +8,14 @@ Issue: #1
 
 ## 結論
 
-Pythoncha の v0.1 は、**Python を実行基盤にする独立した小言語**として設計し、Pythoncha 自身のコードは **MIT License を第一候補**とするのが扱いやすい。
+Pyccha の v0.1 は、**Python を実行基盤にする独立した小言語**として設計し、Pyccha 自身のコードは **MIT License を第一候補**とするのが扱いやすい。
 
 実装方式は、単純な全置換型プリプロセッサではなく、
 
 ```text
 .cha source
   -> tokenizer / parser
-  -> Pythoncha AST or small IR
+  -> Pyccha AST or small IR
   -> Python source or Python AST
   -> Python runtime
 ```
@@ -24,7 +24,7 @@ Pythoncha の v0.1 は、**Python を実行基盤にする独立した小言語*
 
 PoC の数時間だけであれば行ベース変換でもよいが、`str.replace()` や巨大な正規表現チェーンを製品の核にしない。文字列リテラル、コメント、ネスト、表記ゆれが入った瞬間に「方言文法」と「単語置換」の境界が壊れるためである。
 
-名前 **Pythoncha** はライセンスよりも **Python の商標**が論点になる。PSF のポリシーは、Python を正確に指す説明的利用や、Python 用の無償配布製品名での利用を一定範囲で認めている一方、「Python」を別のプログラミング言語を指す名称として使うことは避けるという原則も明記している。Pythoncha は「Python をバックエンドに使う別言語」であるため、**一般公開を大きくする前に PSF Trademarks Committee へ名称確認を取る**のが安全である。将来有償製品として扱う場合は、商品名での商標利用について事前承認が必要になる可能性がさらに高い。
+名称は **Pyccha（ぱいっちゃ）** とする。旧称 `Pythoncha` と異なり、製品名そのものに `Python` を含めないため、「別言語の名称に Python 商標を直接含める」懸念は大きく後退する。由来として Python の `Py` と北九州弁の「〜っちゃ」を説明することは、Pythonとの技術的関係を正確に記述する範囲に留める。PSF公式・公認を示唆しないこと、PythonロゴをPycchaのロゴとして改変利用しないことは引き続き守る。
 
 ---
 
@@ -32,7 +32,7 @@ PoC の数時間だけであれば行ベース変換でもよいが、`str.repla
 
 ### 比較表
 
-| 言語 | 現状 | 実装・実行方式 | 日本語文法上の特徴 | ライセンス / 配布条件 | Pythoncha への示唆 |
+| 言語 | 現状 | 実装・実行方式 | 日本語文法上の特徴 | ライセンス / 配布条件 | Pyccha への示唆 |
 |---|---|---|---|---|---|
 | なでしこ3 | 現行・公開継続 | JavaScript / TypeScript。JavaScriptへ変換してブラウザ / Node.js等で実行 | 日本語の語順、助詞を活用。日本語として読み下せることを重視 | MIT | 「母語らしい文」を構文にする先例。トランスパイル方式も近い |
 | プロデル | 現行・公開継続 | C# / .NET 系。インタプリタとCILコンパイルの系譜 | 助詞を引数の意味付けに使い、動詞をメソッド・制御構文の中心に置く | 公式サイトでは利用可能だが、今回の調査では標準OSSライセンスとしての全体ライセンスを確認できず。コード流用前に要確認 | **助詞を名前付き引数に相当する構文情報として扱う設計が非常に参考になる** |
@@ -42,7 +42,7 @@ PoC の数時間だけであれば行ベース変換でもよいが、`str.repla
 
 なでしこ3は日本語プログラミング言語として現在も公開されており、JavaScript / TypeScriptを基盤とし、内部的にJavaScriptへ変換して実行する。
 
-Pythonchaに近い点は、「英語キーワードを日本語へ単純置換する」のではなく、日本語で読んだ時の自然さを重視していること、そして既存ランタイムへ変換する方式を採っていること。
+Pycchaに近い点は、「英語キーワードを日本語へ単純置換する」のではなく、日本語で読んだ時の自然さを重視していること、そして既存ランタイムへ変換する方式を採っていること。
 
 参考:
 - https://github.com/kujirahand/nadesiko3
@@ -54,7 +54,7 @@ Pythonchaに近い点は、「英語キーワードを日本語へ単純置換�
 
 特に参考になるのは **助詞と動詞の扱い**。FIT2021の論文では、プロデルの助詞は「引数の意味を付加する字句」で、名前付き引数に相当する役割を持つと説明されている。また、補語は `式 + 助詞` で構成され、末尾の動詞へ係る。
 
-これは Pythoncha でもそのまま発想の種になる。
+これは Pyccha でもそのまま発想の種になる。
 
 例:
 
@@ -64,7 +64,7 @@ Pythonchaに近い点は、「英語キーワードを日本語へ単純置換�
 
 のように、`と` / `から` を単なる可読性用文字列ではなく「どの役割の引数か」を示す構文要素にできる。
 
-Pythonchaであれば将来的に、
+Pycchaであれば将来的に、
 
 ```text
 名前を "山田" にする
@@ -91,7 +91,7 @@ Pythonchaであれば将来的に、
 
 ## 2. 自然言語風 / 文化的文体を文法にする言語
 
-| 言語 | 文体 | 実装の考え方 | ライセンス例 | Pythoncha への示唆 |
+| 言語 | 文体 | 実装の考え方 | ライセンス例 | Pyccha への示唆 |
 |---|---|---|---|---|
 | LOLCODE | lolcat / Internet slang | 専用lexer/parser/interpreter | lci は GPL-3.0-or-later | スラングを予約語体系として徹底すると世界観が成立する |
 | Rockstar | ロック歌詞 | 独自言語・interpreter | 現行repoは AGPL-3.0 | 「自然文らしさ」を優先すると曖昧性管理が重要 |
@@ -103,7 +103,7 @@ Pythonchaであれば将来的に、
 
 これらの言語は「特定の単語を置き換える」だけではなく、**文章の型そのもの**をプログラム構造として使っている。
 
-Pythonchaにとって重要なのは、この系譜の「面白さ」は借りつつ、可読性を犠牲にしすぎないこと。
+Pycchaにとって重要なのは、この系譜の「面白さ」は借りつつ、可読性を犠牲にしすぎないこと。
 
 特に避けたいのは以下。
 
@@ -112,7 +112,7 @@ Pythonchaにとって重要なのは、この系譜の「面白さ」は借り�
 - “自然文なら何でも通る”ことを目指してparserを推測器にする
 - 方言らしさをエラーメッセージだけに押し込める
 
-Pythonchaは esolang 的な楽しさを持ってよいが、**構文規則は機械的に説明可能**であるべき。
+Pycchaは esolang 的な楽しさを持ってよいが、**構文規則は機械的に説明可能**であるべき。
 
 参考:
 - LOLCODE / lci: https://github.com/justinmeza/lci
@@ -129,7 +129,7 @@ Pythonchaは esolang 的な楽しさを持ってよいが、**構文規則は機
 
 Hy は Lisp 方言を Python へ埋め込む言語で、Hyコードを **Python AST** へ変換する。2026年にもPyPIリリースがあり、MIT License。
 
-Pythonchaにとって重要なのは、「必ずしもPythonソース文字列を生成しなくてもよい」という点。parserで得た内部表現からPython ASTを生成し、Pythonの `compile()` へ渡す方式も現実的である。
+Pycchaにとって重要なのは、「必ずしもPythonソース文字列を生成しなくてもよい」という点。parserで得た内部表現からPython ASTを生成し、Pythonの `compile()` へ渡す方式も現実的である。
 
 ただし v0.1 では、変換結果の可視化・デバッグがしやすいという理由で Pythonソースを一度生成するほうが開発しやすい可能性が高い。
 
@@ -140,7 +140,7 @@ Pythonchaにとって重要なのは、「必ずしもPythonソース文字列�
 
 Coconut は Python へコンパイルする関数型プログラミング言語。Pythonを拡張する形の構文を持ち、Apache-2.0。
 
-「別言語を既存Pythonランタイムへ落とす」という意味ではPythonchaと非常に近い。言語処理系を独自VMまで広げず、Pythonの生態系と実行環境を再利用する判断の先例になる。
+「別言語を既存Pythonランタイムへ落とす」という意味ではPycchaと非常に近い。言語処理系を独自VMまで広げず、Pythonの生態系と実行環境を再利用する判断の先例になる。
 
 - https://coconut-lang.org/
 - https://github.com/evhub/coconut
@@ -149,7 +149,7 @@ Coconut は Python へコンパイルする関数型プログラミング言語�
 
 Vex Lang は Hinglish（Hindi + English）をキーワードに使うPython transpilerとしてPyPI公開されている小規模言語。2026年リリース、MIT License。
 
-規模感と「文化的 / 自然言語的な表現をPythonへ落とす」という意味で参考になる。ただしPythonchaは単語置換型より一段踏み込み、**北九州弁の語尾・助詞・接続そのものを文法要素にする**ことを独自性の中心に置くべき。
+規模感と「文化的 / 自然言語的な表現をPythonへ落とす」という意味で参考になる。ただしPycchaは単語置換型より一段踏み込み、**北九州弁の語尾・助詞・接続そのものを文法要素にする**ことを独自性の中心に置くべき。
 
 - https://pypi.org/project/vex-lang/
 
@@ -173,12 +173,12 @@ Vex Lang は Hinglish（Hindi + English）をキーワードに使うPython tran
 2. Unicode対応が明示されている
 3. LALRで厳密な文法を作りつつ、必要ならEarleyで曖昧性の調査もできる
 4. token位置を保持でき、方言らしいエラーを作る時にも元ソース位置へ戻れる
-5. MITでPythonchaのMIT案と相性がよい
+5. MITでPycchaのMIT案と相性がよい
 6. parser frameworkとして十分枯れているが、textXほど設計全体を支配しない
 
 ### `ast` / `tokenize` の使いどころ
 
-`ast` はPython構文を解析するためのものなので、`もし 名前 が "山田" やったら` のようなPythonchaソースを直接読ませることはできない。
+`ast` はPython構文を解析するためのものなので、`もし 名前 が "山田" やったら` のようなPycchaソースを直接読ませることはできない。
 
 一方で、
 
@@ -260,7 +260,7 @@ v0.1ではファジー一致をしない。
 
 ### v0.1本体にはparserを入れる
 
-Pythonchaの特徴は語尾・助詞なので、「構文らしい部分」を後回しにすると、最も重要な設計判断を後から全部やり直すことになる。
+Pycchaの特徴は語尾・助詞なので、「構文らしい部分」を後回しにすると、最も重要な設計判断を後から全部やり直すことになる。
 
 そのため、
 
@@ -277,7 +277,7 @@ Pythonchaの特徴は語尾・助詞なので、「構文らしい部分」を�
 
 Pythonソフトウェアと文書は PSF License Version 2 で提供されている。
 
-Pythonchaがユーザー環境のPythonを実行基盤として利用するだけであれば、Pythoncha自身をPSF Licenseにする必要はない。MIT / Apache-2.0 / BSD等の独立したライセンスで公開できる。
+Pycchaがユーザー環境のPythonを実行基盤として利用するだけであれば、Pyccha自身をPSF Licenseにする必要はない。MIT / Apache-2.0 / BSD等の独立したライセンスで公開できる。
 
 また、Python 2.2以降のライセンスはGPL-compatibleとPython公式文書に明記されている。
 
@@ -301,19 +301,19 @@ Python配布物にはPSF License以外のライセンスが適用される組み
 
 ### Python標準ライブラリのコードをコピーする場合
 
-単に `import ast` や `import tokenize` して利用するのと、CPythonの実装コードをPythonchaへコピーするのは別。
+単に `import ast` や `import tokenize` して利用するのと、CPythonの実装コードをPycchaへコピーするのは別。
 
 コピーする場合、そのファイルに適用されるPSF Licenseや個別ライセンスを確認し、必要なnoticeを保持する。
 
 Python 3.8.6以降、公式ドキュメント中のexample / recipe等のコードは PSF License v2 と Zero-Clause BSD のデュアルライセンスとされている。
 
-原則としてPythonchaでは、標準ライブラリ実装のコピーを避け、public APIを呼ぶ。
+原則としてPycchaでは、標準ライブラリ実装のコピーを避け、public APIを呼ぶ。
 
 ---
 
 ## 8. 依存ライブラリのライセンス互換性
 
-PythonchaをMITにする場合、MIT / BSD / Apache-2.0 の一般的なparser依存は採用しやすい。
+PycchaをMITにする場合、MIT / BSD / Apache-2.0 の一般的なparser依存は採用しやすい。
 
 ### 推奨優先度
 
@@ -324,15 +324,15 @@ PythonchaをMITにする場合、MIT / BSD / Apache-2.0 の一般的なparser依
 
 ### GPL系依存
 
-GPLライブラリをPythonchaの必須コンポーネントとして配布・密接結合すると、配布形態によってはPythoncha側のライセンス方針へ影響する。
+GPLライブラリをPycchaの必須コンポーネントとして配布・密接結合すると、配布形態によってはPyccha側のライセンス方針へ影響する。
 
 MITで「好きに組み込みやすい小言語」を目指すなら、parser等の中核依存ではGPLを避けるほうが単純。
 
-LOLCODEのlci等は設計参考にはなるが、そのコードをPythonchaへコピーしない。
+LOLCODEのlci等は設計参考にはなるが、そのコードをPycchaへコピーしない。
 
 ### vendoring
 
-依存ライブラリをPyPI依存として宣言するだけでなく、ソースをPythonchaリポジトリへvendoringする場合は、依存側のlicense file / copyright noticeを同梱する。
+依存ライブラリをPyPI依存として宣言するだけでなく、ソースをPycchaリポジトリへvendoringする場合は、依存側のlicense file / copyright noticeを同梱する。
 
 ---
 
@@ -350,11 +350,11 @@ license-files = ["LICENSE"]
 
 旧式の `license = { file = "LICENSE" }` は非推奨。
 
-Pythonchaの想定例:
+Pycchaの想定例:
 
 ```toml
 [project]
-name = "pythoncha"
+name = "pyccha"
 version = "0.1.0"
 requires-python = ">=3.11"
 license = "MIT"
@@ -364,7 +364,7 @@ dependencies = [
 ]
 
 [project.scripts]
-pythoncha = "pythoncha.cli:main"
+pyccha = "pyccha.cli:main"
 ```
 
 実際の最低Pythonバージョンは実装開始時に決める。
@@ -376,7 +376,7 @@ pythoncha = "pythoncha.cli:main"
 
 ### PyPI名
 
-2026-09-15時点のWeb/PyPI検索では、`pythoncha` という既存PyPIプロジェクトは確認できなかった。ただしPyPIの名前は先取りされうるため、**初回公開直前に再確認する**。
+2026-09-15時点のWeb/PyPI検索では、`pyccha` という既存PyPIプロジェクトは確認できなかった。ただしPyPIの名前は先取りされうるため、**初回公開直前に再確認する**。
 
 `pycha` は別のchart libraryとして既に存在するため、短縮名 `pycha` は使わない。
 
@@ -403,33 +403,30 @@ PSFのTrademark Usage Policyでは、
 - https://www.python.org/psf/trademarks/
 - https://www.python.org/psf/trademarks-faq/
 
-### Pythoncha への当てはめ
+### Pyccha への当てはめ
 
-Pythonchaは「Python向けlibrary」ではなく、表面構文を持つ**別言語**である。
+Pycchaは「Python向けlibrary」ではなく、独自の表面構文を持ち、Pythonを実行基盤として利用する**別言語**である。
 
-同時に、Pythonを実行基盤にしており、名称のPython部分は技術的関係を示している。
+旧称 `Pythoncha` は名称そのものに `Python` を含んでいたため、PSFの商標ポリシー上、「Pythonを別のプログラミング言語名として使う」点を個別確認する必要性が高かった。
 
-このためポリシー上の位置が完全に自明ではない。
+2026-09-15に名称を **Pyccha（ぱいっちゃ）** へ変更したことで、この直接的な懸念は大きく後退した。`Py` は名称の由来としてPythonとの関係を想起させるが、少なくとも製品名そのものを `Python` と呼ぶ構造ではない。
 
-**推奨: public release前にPSF Trademarks Committeeへ問い合わせる。**
+公開時の運用方針:
 
-問い合わせ時には、次を明確にする。
+- 「Pythonを実行基盤にする独立した言語」と正確に説明する
+- PSF公式・公認・提携プロジェクトであると誤認させない
+- Pythonロゴを改変してPycchaロゴとして使わない
+- PythonやPSFの商標ポリシーが改定された場合は再確認する
+- 商用展開やブランド利用の仕方が変わり、Python商標を製品名・ロゴ・販促物で強く使う場合は、その時点でPSFポリシーを再確認する
 
-- 無償OSSとして公開予定
-- Pythonへtranspileし、CPython等で実行する
-- PSF公式・公認を名乗らない
-- Python logoをPythonchaのロゴとして改変利用しない
-- 将来商用利用の可能性はある
-- “Pythoncha”という名称利用に事前承認が必要か確認したい
+現時点では、**Pycchaという名称だけを理由にPSF Trademarks Committeeへの事前問い合わせを必須タスクとはしない**。
 
-READMEには少なくとも、
+READMEに非提携表記を置く場合は、例えば次のように簡潔に書ける。
 
 ```text
-Pythoncha is an independent project and is not affiliated with or endorsed by
+Pyccha is an independent project and is not affiliated with or endorsed by
 the Python Software Foundation.
 ```
-
-相当の非提携表記を入れる候補がある。
 
 ### .cha 拡張子
 
@@ -437,11 +434,11 @@ the Python Software Foundation.
 
 ただしファイル拡張子は中央管理された一意なnamespaceではないため、技術的な使用不可を意味しない。
 
-Pythonchaの文脈では短く覚えやすいため第一候補のままでよい。ただしOSの既存関連付けと衝突する可能性はREADMEに記載してもよい。
+Pycchaの文脈では短く覚えやすいため第一候補のままでよい。ただしOSの既存関連付けと衝突する可能性はREADMEに記載してもよい。
 
 ---
 
-## 11. Pythoncha 側の推奨OSSライセンス
+## 11. Pyccha 側の推奨OSSライセンス
 
 ### 第一候補: MIT
 
@@ -461,11 +458,11 @@ Pythonchaの文脈では短く覚えやすいため第一候補のままでよ�
 
 ### BSD
 
-BSD-2-Clause / BSD-3-Clauseも問題ないが、PythonchaでMITより優先する明確な利点は現時点では薄い。
+BSD-2-Clause / BSD-3-Clauseも問題ないが、PycchaでMITより優先する明確な利点は現時点では薄い。
 
 ### 推奨結論
 
-**Pythoncha自身: MIT**
+**Pyccha自身: MIT**
 
 ただし、以下は別管理する。
 
@@ -478,7 +475,7 @@ BSD-2-Clause / BSD-3-Clauseも問題ないが、PythonchaでMITより優先す�
 ## 12. v0.1 推奨アーキテクチャ
 
 ```text
-src/pythoncha/
+src/pyccha/
   __init__.py
   cli.py
   parser.py
@@ -490,10 +487,10 @@ src/pythoncha/
 
 ### 流れ
 
-1. `pythoncha hello.cha`
+1. `pyccha hello.cha`
 2. UTF-8でsource読込
 3. Larkでparse
-4. Pythoncha AST / dataclassへ変換
+4. Pyccha AST / dataclassへ変換
 5. Pythonソースを生成
 6. `compile(..., filename=original_cha_path, ...)`
 7. 実行
@@ -521,11 +518,11 @@ src/pythoncha/
 
 ---
 
-## 13. Pythoncha 独自性の仮説
+## 13. Pyccha 独自性の仮説
 
 既存の日本語プログラミング言語には、助詞・動詞を本格的に文法へ取り込む先例がある。
 
-したがってPythonchaの独自性を、
+したがってPycchaの独自性を、
 
 > 「日本語の助詞を使う言語」
 
@@ -543,7 +540,7 @@ src/pythoncha/
 
 `っちゃ` は断定・強調・出力・文終端のどこへ割り当てると北九州弁として自然かを検討する。
 
-**方言の意味とprogram semanticsの対応そのもの**がPythonchaの研究テーマになる。
+**方言の意味とprogram semanticsの対応そのもの**がPycchaの研究テーマになる。
 
 ---
 
@@ -557,7 +554,7 @@ src/pythoncha/
 - 方言の誇張を面白さの主成分にする
 - parser errorを全部ネタ文へ変えて原因を読めなくする
 - GPL等のコードをlicense確認なしでコピーする
-- Python logoを少し変えてPythoncha logoにする
+- Python logoを少し変えてPyccha logoにする
 - 「Python公式の方言版」のような誤認を招く説明
 
 ---
@@ -592,18 +589,24 @@ hello.cha
 
 Python側のSyntaxError / runtime errorを、元の `.cha` 行へ戻す最小設計を作る。
 
-### Issue D: 名前・商標確認
+### Issue D: 名称・公開前チェック
 
-PSF Trademarks Committeeへ `Pythoncha` 名称について問い合わせる文面を作成・送信する。
+Pycchaへの改名を前提に、公開直前に以下を再確認する。
 
-これは実装とは独立した判断タスクなので別Issueにする価値がある。
+- `Pyccha` / `pyccha` の主要プロジェクト名との衝突
+- PyPI `pyccha` の取得可否
+- CLI `pyccha` の衝突
+- READMEでPythonとの関係を正確に説明できているか
+- PSF公式・公認を示唆する表現やロゴ利用がないか
+
+旧称 `Pythoncha` で想定していたPSFへの名称問い合わせは、現時点では必須タスクから外す。
 
 ### Issue E: PyPI公開準備
 
 初回公開直前に、
 
-- `pythoncha` name availability
-- CLI `pythoncha`
+- `pyccha` name availability
+- CLI `pyccha`
 - `.cha`
 - READMEのtrademark notice
 - `LICENSE`
