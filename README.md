@@ -137,6 +137,8 @@ Pyccha 独自の小さな言語として成立させ、必要に応じて Python
 
 調査結果は [`docs/research/related-projects.md`](docs/research/related-projects.md) にまとめています。
 
+方言そのものの確認・修正は [`docs/dialect/kitakyushu.md`](docs/dialect/kitakyushu.md)、v0.1の文法候補は [`docs/design/grammar-v0.1.md`](docs/design/grammar-v0.1.md) で分けて管理します。方言上の記述と文法案が食い違う場合は、方言ノートを優先します。
+
 ## 名前について
 
 - 表記: **Pyccha**
