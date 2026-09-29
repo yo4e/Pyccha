@@ -1,0 +1,40 @@
+start: statement*
+
+?statement: assignment
+          | output
+          | if_stmt
+          | repeat_stmt
+
+assignment: NAME "=" expr
+output: expr "っちゆう"
+
+if_stmt: "もし" condition "やったら" statement* else_clause? "おしまい"
+else_clause: "ちごうたら" statement*
+
+repeat_stmt: REPEAT_COUNT _REPEAT statement* "おしまい"
+
+?condition: disjunction
+?disjunction: conjunction ("か" conjunction)* -> disjunction
+?conjunction: negatable ("それと" negatable)* -> conjunction
+?negatable: comparison
+          | expr "やないん" -> negation
+
+?comparison: expr "==" expr -> equal
+           | expr "!=" expr -> not_equal
+           | expr "が" expr "よりでかいん" -> greater_than
+           | expr "が" expr "よりこまいん" -> less_than
+
+?expr: STRING -> string
+     | NUMBER -> number
+     | NAME   -> name
+
+REPEAT_COUNT.20: /(?:0|[1-9]\d*)(?=回くりかえす)/
+_REPEAT.20: "回くりかえす"
+
+NAME: /[^\W\d][\w]*/
+NUMBER: /-?(?:0|[1-9]\d*)(?:\.\d+)?/
+
+%import common.ESCAPED_STRING -> STRING
+%import common.WS
+%ignore WS
+%ignore /#[^\n]*/
