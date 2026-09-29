@@ -119,3 +119,9 @@ def test_syntax_error_has_line_and_column() -> None:
     assert exc_info.value.line >= 1
     assert exc_info.value.column >= 1
     assert ":" in message
+
+
+def test_python_keyword_cannot_be_used_as_name() -> None:
+    with pytest.raises(PycchaSyntaxError) as exc_info:
+        parse_source("for = 1")
+    assert "変数名に使えん名前" in str(exc_info.value)
