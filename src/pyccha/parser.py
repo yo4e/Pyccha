@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import ast as py_ast
+import keyword
 from importlib import resources
 from typing import Any
 
 from lark import Lark, Token, Transformer, UnexpectedInput, v_args
+from lark.exceptions import VisitError
 
 from .ast import (
     And,
@@ -46,6 +48,16 @@ def _span_from_token(token: Token) -> SourceSpan:
     return SourceSpan(token.line, token.column, token.end_line, token.end_column)
 
 
+def _validate_identifier(identifier: str, span: SourceSpan) -> str:
+    if not identifier.isidentifier() or keyword.iskeyword(identifier):
+        raise PycchaSyntaxError(
+            f"変数名に使えん名前: {identifier}",
+            line=span.line,
+            column=span.column,
+        )
+    return identifier
+
+
 @v_args(meta=True)
 class _AstBuilder(Transformer):
     def start(self, meta: Any, children: list[Any]) -> Program:
@@ -63,16 +75,13 @@ class _AstBuilder(Transformer):
 
     def name(self, meta: Any, children: list[Any]) -> Name:
         token = children[0]
-        identifier = str(token)
-        if not identifier.isidentifier():
-            raise ValueError(f"invalid Python-compatible identifier: {identifier}")
-        return Name(_span_from_token(token), identifier)
+        span = _span_from_token(token)
+        identifier = _validate_identifier(str(token), span)
+        return Name(span, identifier)
 
     def assignment(self, meta: Any, children: list[Any]) -> Assignment:
         name_token, value = children
-        name = str(name_token)
-        if not name.isidentifier():
-            raise ValueError(f"invalid Python-compatible identifier: {name}")
+        name = _validate_identifier(str(name_token), _span_from_token(name_token))
         return Assignment(_span_from_meta(meta), name, value)
 
     def output(self, meta: Any, children: list[Any]) -> Output:
@@ -139,4 +148,9 @@ def parse_source(source: str) -> Program:
             column=exc.column,
             context=context,
         ) from exc
-    return _BUILDER.transform(tree)
+    try:
+        return _BUILDER.transform(tree)
+    except VisitError as exc:
+        if isinstance(exc.orig_exc, PycchaSyntaxError):
+            raise exc.orig_exc from exc
+        raise
