@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import unicodedata
+
 from .ast import (
     And,
     Assignment,
@@ -22,6 +24,15 @@ from .ast import (
 from .parser import parse_source
 
 
+def _python_identifier(identifier: str) -> str:
+    # Python normalizes identifiers before resolving them. Escape its runtime
+    # helpers and the whole generated namespace, including escaped user names.
+    name = unicodedata.normalize("NFKC", identifier)
+    if name in {"print", "range"} or name.startswith("_pyccha_"):
+        return f"_pyccha_user_{name}"
+    return name
+
+
 class PythonTranspiler:
     def __init__(self) -> None:
         self._repeat_index = 0
@@ -35,7 +46,8 @@ class PythonTranspiler:
     def _statement(self, statement: Statement, indent: int) -> list[str]:
         prefix = "    " * indent
         if isinstance(statement, Assignment):
-            return [f"{prefix}{statement.name} = {self._expr(statement.value)}"]
+            name = _python_identifier(statement.name)
+            return [f"{prefix}{name} = {self._expr(statement.value)}"]
         if isinstance(statement, Output):
             return [f"{prefix}print({self._expr(statement.value)})"]
         if isinstance(statement, If):
@@ -67,7 +79,7 @@ class PythonTranspiler:
         if isinstance(expr, NumberLiteral):
             return repr(expr.value)
         if isinstance(expr, Name):
-            return expr.identifier
+            return _python_identifier(expr.identifier)
         raise TypeError(f"unsupported expression: {type(expr).__name__}")
 
     def _condition(self, condition) -> str:
