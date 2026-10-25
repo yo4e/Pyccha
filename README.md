@@ -118,6 +118,8 @@ pyccha --emit-python hello.cha
 
 `python -m pyccha hello.cha` でも実行できます。
 
+`print`、`range`、`_pyccha_` で始まる名前も変数名に使えます。変換後の Python では、出力・繰り返しの処理と衝突しないよう、これらの変数名を内部用の名前へ変換します。
+
 将来的には、
 
 ```bash

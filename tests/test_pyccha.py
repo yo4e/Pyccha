@@ -125,3 +125,45 @@ def test_python_keyword_cannot_be_used_as_name() -> None:
     with pytest.raises(PycchaSyntaxError) as exc_info:
         parse_source("for = 1")
     assert "変数名に使えん名前" in str(exc_info.value)
+
+
+@pytest.mark.parametrize("name", ["print", "range", "ｐｒｉｎｔ", "ｒａｎｇｅ"])
+def test_builtin_names_are_usable_variables(
+    name: str, capsys: pytest.CaptureFixture[str]
+) -> None:
+    source = f'''\
+{name} = 7
+2回くりかえす
+    もし {name} == 7 やったら
+        {name} っちゆう
+    おしまい
+おしまい
+'''
+    run_source(source)
+    assert capsys.readouterr().out == "7\n7\n"
+
+
+def test_generated_names_preserve_values_in_nested_blocks(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    source = '''\
+print = 7
+_pyccha_user_print = 8
+_pyccha_repeat_0 = 9
+2回くりかえす
+    _pyccha_repeat_1 = _pyccha_repeat_0
+    2回くりかえす
+        もし _pyccha_repeat_1 == 9 やったら
+            print っちゆう
+        ちごうたら
+            "値が変わった" っちゆう
+        おしまい
+    おしまい
+おしまい
+_pyccha_repeat_0 っちゆう
+_pyccha_repeat_1 っちゆう
+_pyccha_user_print っちゆう
+'''
+    # Emitted Python must also work independently of run_source's namespace.
+    exec(compile(transpile_source(source), "<test>", "exec"), {})
+    assert capsys.readouterr().out == "7\n7\n7\n7\n9\n9\n8\n"
